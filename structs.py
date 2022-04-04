@@ -4,16 +4,31 @@ class GroundNote:
         self.track = track
 
 class MidiMessage:
-    def __init__(self, type, value, time, tempo):
+    def __init__(self, type, value, time, time_ms):
         self.type = type
         self.value = value
         self.time = time
-        self.time_ms = int(time / 128 / (tempo / 60 / 1000))
+        self.time_ms = time_ms
 
 class MidiNote:
-    def __init__(self, note, st_time, end_time, tempo):
+    def __init__(self, note, time, time_ms):
         self.note = note
-        self.start_time = st_time
-        self.end_time = end_time
-        self.start_time_ms = int(st_time / 128 / (tempo / 60 / 1000))
-        self.ed_time_ms = int(end_time / 128 / (tempo / 60 / 1000))
+        self.start_time = time[0]
+        self.length = time[1] - time[0]
+        self.start_time_ms = time_ms[0] #int(st_time / 128 / (tempo / 60 / 1000))
+        self.length_ms = time_ms[1] - time_ms[0]
+
+class Stack:
+    def __init__(self):
+        self.stack = list()
+    def put(self, data):
+        self.stack.append(data)
+    def take(self):
+        try:
+            ret = self.stack[-1]
+        except IndexError:
+            return None
+        self.stack = self.stack[:-1]
+        return ret
+    def isEmpty(self):
+        return False if self.stack else True
