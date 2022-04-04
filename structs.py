@@ -25,10 +25,9 @@ class Stack:
         self.stack.append(data)
     def take(self):
         try:
-            ret = self.stack[-1]
+            ret = self.stack.pop(-1)
         except IndexError:
             return None
-        self.stack = self.stack[:-1]
         return ret
     def isEmpty(self):
         return False if self.stack else True

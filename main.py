@@ -1,10 +1,12 @@
 from midi_util import deserializeMidiObj
 from structs import MidiNote, MidiMessage
 import mido
+import sys
 
 BASE_KEY = range(60, 64) ## C5 ~ D#5
 HOLD_THRESH = 64
-FILE = r"test2.mid"
+FILE = sys.argv[1]
+# FILE = r"test2.mid"
 
 mid = mido.MidiFile(FILE)
 midi_messages = deserializeMidiObj(mid, BASE_KEY, 0)

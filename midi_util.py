@@ -17,7 +17,7 @@ def deserializeMidiObj(mid: mido.MidiFile, key_map: list, track_num: int) -> lis
     for message in track:
         abs_timeline += message.time
         if message.type == "set_tempo":
-            tempo = 120
+            tempo = message.tempo
             realtime_ms += int(message.time / 128 / (tempo / 60 / 1000))
             midi_messages.append(MidiMessage(message.type, message.tempo, abs_timeline, realtime_ms))
             continue
@@ -28,5 +28,4 @@ def deserializeMidiObj(mid: mido.MidiFile, key_map: list, track_num: int) -> lis
             if not midi_message_stack[message.note].isEmpty():
                 start_time = midi_message_stack[message.note].take()
                 midi_messages.append(MidiNote(message.note, (start_time[0], abs_timeline), (start_time[1], realtime_ms)))
-
     return midi_messages
