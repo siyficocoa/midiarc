@@ -1,8 +1,3 @@
-class GroundNote:
-    def __init__(self, time, track):
-        self.time = time
-        self.track = track
-
 class MidiMessage:
     def __init__(self, type, value, time, time_ms):
         self.type = type
