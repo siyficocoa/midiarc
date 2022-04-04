@@ -3,6 +3,13 @@ class GroundNote:
         self.time = time
         self.track = track
 
+class MidiMessage:
+    def __init__(self, type, value, time, tempo):
+        self.type = type
+        self.value = value
+        self.time = time
+        self.time_ms = int(time / 128 / (tempo / 60 / 1000))
+
 class MidiNote:
     def __init__(self, note, st_time, end_time, tempo):
         self.note = note
