@@ -1,28 +1,33 @@
-from midi_util import deserializeMidiObj
-from structs import MidiNote, MidiMessage
-import mido
 import sys
+import mido
+from midi_util import deserializeMidiObj
+from chart_util import StringBuilder, mirror
+from structs import MidiMessage, MidiNote
 
-BASE_KEY = range(60, 64) ## C5 ~ D#5
+KEYMAP = range(60, 64) ## C5 ~ D#5
 HOLD_THRESH = 64
 FILE = sys.argv[1]
 # FILE = r"test2.mid"
 
 mid = mido.MidiFile(FILE)
-midi_messages = deserializeMidiObj(mid, BASE_KEY, 0)
+midi_messages = deserializeMidiObj(mid, KEYMAP, 0)
 
 chart = list()
+str_builder = StringBuilder()
 tempo = 120 
-audio_offset = -775
+audio_offset = 0
 beats = 3
 meta_message = f"AudioOffset:{audio_offset}\n-\n"
 
 for message in midi_messages:
     if type(message) is MidiNote:
-        chart.append(f"({message.start_time_ms},{5 - (message.note - 59)});")
+        if message.length < HOLD_THRESH:
+            chart.append(str_builder.groundNote(message.start_time_ms, mirror(message.note, KEYMAP[0])))
+        else:
+            chart.append(str_builder.hold(message.start_time_ms, message.start_time_ms + message.length_ms, mirror(message.note, KEYMAP[0])))
     elif type(message) is MidiMessage:
         if message.type == "set_tempo":
-            chart.append(f"timing(0,{tempo:.2f},{beats:.2f});")
+            chart.append(str_builder.timing(message.time_ms, tempo, beats))
 
 chart_str = meta_message + "\n".join(chart)
 # with open("out", "w") as file:
