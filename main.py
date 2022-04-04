@@ -13,7 +13,6 @@ mid = mido.MidiFile(FILE)
 midi_messages = deserializeMidiObj(mid, KEYMAP, 0)
 
 chart = list()
-tempo = 120 
 audio_offset = 0
 beats = 3
 meta_message = f"AudioOffset:{audio_offset}\n-\n"
@@ -26,7 +25,7 @@ for message in midi_messages:
             chart.append(StringBuilder.hold(message.start_time_ms, message.start_time_ms + message.length_ms, mirror(message.note, KEYMAP[0])))
     elif type(message) is MidiMessage:
         if message.type == "set_tempo":
-            chart.append(StringBuilder.timing(message.time_ms, tempo, beats))
+            chart.append(StringBuilder.timing(message.time_ms, message.value, beats))
 
 chart_str = meta_message + "\n".join(chart)
 # with open("out", "w") as file:

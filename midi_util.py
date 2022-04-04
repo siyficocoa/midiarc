@@ -17,9 +17,9 @@ def deserializeMidiObj(mid: mido.MidiFile, key_map: list, track_num: int) -> lis
     for message in track:
         abs_timeline += message.time
         if message.type == "set_tempo":
-            tempo = 156
+            tempo = int(mido.tempo2bpm(message.tempo))
             realtime_ms += int(message.time / 128 / (tempo / 60 / 1000))
-            midi_messages.append(MidiMessage(message.type, message.tempo, abs_timeline, realtime_ms))
+            midi_messages.append(MidiMessage(message.type, tempo, abs_timeline, realtime_ms))
             continue
         realtime_ms += int(message.time / 128 / (tempo / 60 / 1000))
         if message.type == "note_on":
