@@ -14,7 +14,6 @@ def mirror(lane: int, base_note: int):
 def midiMessageToChart(messages: list, hold_thresh: int, keymap: list, beats=4) -> list[str]:
     ret = list()
     for message in messages:
-        print(message)
         if type(message) is MidiNote:
             if message.length < hold_thresh:
                 ret.append(StringBuilder.groundNote(message.start_time_ms, mirror(message.note, keymap[0])))
