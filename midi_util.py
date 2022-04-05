@@ -1,9 +1,7 @@
 from structs import *
 import mido
 
-def deserializeMidiObj(mid: mido.MidiFile, key_map: list, track_num: int) -> list:
-    # print(f"Tracks:{len(mid.tracks)}")
-
+def readMidiObj(mid: mido.MidiFile, key_map: list, track_num: int) -> list:
     abs_timeline = 0
     realtime_ms = 0
     midi_message_stacks = {key_map[0]: [],
@@ -14,7 +12,7 @@ def deserializeMidiObj(mid: mido.MidiFile, key_map: list, track_num: int) -> lis
 
     track = mid.tracks[track_num]
 
-    # merge NOTE_ON and NOTE_OFF messages to a MidiNote object,
+    # merge NOTE_ON and NOTE_OFF messages to MidiNote objects,
     # and convert relative timeline(which mido uses) to absolute timeline
     # for convenience when converting midi tick to milliseconds
     for index, message in enumerate(track):
@@ -42,7 +40,7 @@ def deserializeMidiObj(mid: mido.MidiFile, key_map: list, track_num: int) -> lis
                                             (start_time[1], realtime_ms)))
             else:
                 # handle error when popping an empty stack
-                # a corrupted midi file will cause this error(like a missing NOTE_ON message)
+                # corrupted midi files will cause this error(like a missing NOTE_ON message)
                 print("Error: Encountered a NOTE_OFF message with no matching NOTE_ON message, skipped.")
                 print(f"at track {track_num}, message {index}:", message)
     return midi_messages

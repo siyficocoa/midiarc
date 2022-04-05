@@ -1,17 +1,17 @@
 import sys
 import mido
-from midi_util import deserializeMidiObj
+from midi_util import readMidiObj
 from chart import midiMessageToChart
 
 KEYMAP = range(60, 64)      ## C5 ~ D#5
-HOLD_THRESH = 64            ## midi notes longer than this value will be converted to hold, else a tap
+HOLD_THRESH = 64            ## midi notes longer than this value will be converted to hold, else tap
 AUDIO_OFFSET = 0
 
 # file = sys.argv[1]
 file = r"./testmidi/test2.mid"
 
 mid = mido.MidiFile(file)
-midi_messages = deserializeMidiObj(mid, KEYMAP, 0)
+midi_messages = readMidiObj(mid, KEYMAP, 0)
 chart = midiMessageToChart(midi_messages, HOLD_THRESH, KEYMAP)
 
 meta_message = f"AudioOffset:{AUDIO_OFFSET}\n-\n"
