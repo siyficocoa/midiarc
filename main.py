@@ -7,7 +7,7 @@ from structs import MidiMessage, MidiNote
 KEYMAP = range(60, 64) ## C5 ~ D#5
 HOLD_THRESH = 64
 #FILE = sys.argv[1]
-FILE = r"test2.mid"
+FILE = r"test.mid"
 
 mid = mido.MidiFile(FILE)
 midi_messages = deserializeMidiObj(mid, KEYMAP, 0)
@@ -18,6 +18,7 @@ beats = 3
 meta_message = f"AudioOffset:{audio_offset}\n-\n"
 
 for message in midi_messages:
+    print(message)
     if type(message) is MidiNote:
         if message.length < HOLD_THRESH:
             chart.append(StringBuilder.groundNote(message.start_time_ms, mirror(message.note, KEYMAP[0])))

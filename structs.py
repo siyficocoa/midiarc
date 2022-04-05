@@ -1,3 +1,6 @@
+from objprint import add_objprint
+
+@add_objprint
 class MidiMessage:
     def __init__(self, type, value, time, time_ms):
         self.type = type
@@ -5,6 +8,7 @@ class MidiMessage:
         self.time = time
         self.time_ms = time_ms
 
+@add_objprint
 class MidiNote:
     def __init__(self, note, time, time_ms):
         self.note = note
@@ -13,6 +17,7 @@ class MidiNote:
         self.start_time_ms = time_ms[0] #int(st_time / 128 / (tempo / 60 / 1000))
         self.length_ms = time_ms[1] - time_ms[0]
 
+@add_objprint
 class Stack:
     def __init__(self):
         self.stack = list()
